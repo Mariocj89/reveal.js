@@ -1,0 +1,353 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Travelling in Datetime</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                    <section>
+											<h3>Travelling in Datetime</h3>
+											<img class="noborder" src="img/datetime/clock.gif" width="50%"/>
+											<small >Mario Corchero <br/> PyconEs 2016</small>
+										</section>
+                    <section>
+											<img class="noborder" src="img/datetime/homer-timetravel.gif" width="80%"/>
+											<!-- Asi me senti cuando empeaze a trabajar con datetime,
+										    empiezas intentando hacerlo todo bien, pero algo siempre falla
+												y no te afecta hoy, sino en dos meses. -->
+										</section>
+                    <section>
+											<h3>datetime module</h3>
+											  <!-- El modulo datetime hay: date, time, datetime -->
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> import datetime as dt</code></pre>
+												<!-- convencion importar as dt, puesto que hay un datetime dentro y se lee mas claro -->
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.date(2016, 10, 30)</code></pre>
+												<!-- times in python have microsecond precision -->
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.time(11, 30)</code></pre>
+												<!-- datetimes store information of a point in the history with microsecond granularity
+														 time part is optional (h, m, s us)-->
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(2016, 10, 30, 0, 0, 0, 0)</code></pre>
+										</section>
+                    <section>
+											<h3>Operaciones con tiempo</h3>
+											  <p>datetime.timedelta representa un intervalo de tiempo</p>
+											  <!-- El modulo datetime: date, time, datetime y timedelta -->
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.timedelta(days=1, seconds=30)</code></pre>
+												<p class="fragment">argumentos de timedelta: days, seconds, microseconds, milliseconds, minutes, hours, weeks</p>
+												<br />
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(2016, 10, 30, 5, 30) + dt.timedelta(days=1)
+datetime.datetime(2016, 10, 31, 5, 30)</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(2016, 10, 31) - dt.datetime(2016, 10, 30)
+datetime.timedelta(1)</code></pre>
+										</section>
+                    <section>
+											<h3>Ahora!</h3>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.date.today()</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime.now()</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime.now().time()</code></pre>
+												<!-- David: La hora esta mal!!! -->
+										</section>
+                    <section>
+											<img src="img/datetime/great-question.jpg" width="50%"/>
+										</section>
+                    <section>
+												<h3>Zona Horarias</h3>
+												<small><blockquote cite="https://docs.python.org/3.5/library/datetime.html#timezone-objects">The standard library has timezone class for handling arbitrary fixed offsets from UTC and timezone.utc as UTC timezone instance.<br/>
+pytz library brings the IANA timezone database (aka the Olson database) to Python and its usage is recommended.</blockquote></small>
+											  <!-- This brings you the IANA database, you are free to use any db, the key is you need a mapping
+												between a geographical place and an offset between utc, that is what datetime can work with -->
+												<pre class="fragment"><code class="shell" data-trim contenteditable>$ pip install pytz</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> pytz.all_timezones</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz = pytz.timezone("Europe/Madrid")</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz.localize(a_naive_datetime)</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz.as_timezone(localized_datetime)</code></pre>
+										</section>
+                    <section>
+                    		<img src="img/datetime/homer-burned.gif" width="60%"/>
+										</section>
+                    <section>
+												<h3>Construllendo fechas con PyTz</h3>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime.now(tz) # good</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(year, month, day, tzinfo=tz)
+# See you soon!</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime.now())
+# zombies will spawn whlist you sleep</code></pre>
+										</section>
+                    <section>
+	                    <section>
+												<h3>Los consejos de tu cuñado que no funcionan</h3>
+												<ul>
+													<li class="fragment">Usa fechas sin tz internamente y despues localiza.</li>
+													<!-- Problemas: 1) al lozalizar te estalla por los DST
+																					2) si te pido que hagas algo a las 10 NYtime, como lo haces -->
+													<li class="fragment">Puedo manejar "a pelo" las zonas horarias.</li>
+												</ul>
+											</section>
+		                  <section>
+												<h3>Fin</h3>
+												<!-- David dice: Yo creo que no es tan dificil -->
+		                  </section>
+                      <section data-transition="none"><img src="img/datetime/laught-1.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-2.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-3.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-4.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-5.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-6.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-7.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-8.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-9.jpg" width="60%"/></section>
+                      <section data-transition="none"><img src="img/datetime/laught-10.jpg" width="60%"/></section>
+										</section>
+	                  <section>
+                      <section data-transition="none"><img src="img/datetime/timezones.gif" width="100%"/></section>
+                      <section data-transition="none">
+												<h3>Nepal</h3>
+												<pre><code class="python" data-trim contenteditable>
+>>> now = dt.datetime.now(pytz.utc)
+>>> now.astimezone(pytz.timezone("Asia/Kathmandu"))</code></pre>
+												<img src="img/datetime/nepal.jpg" width="60%"/>
+												<p> UTC </p>
+											</section>
+		                  <section>
+												<h3>DST</h3>
+												<!-- Los horarios de verano!, si le sumas a una fecha un dia (24h) te da la misma hora maniana,
+												pero si maniana le restas hoy te da un dia y una hora!
+												Cuando cojas una fecha, llama a normalize) -->
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(year, month, day, tzinfo=tz)</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime(2016, 10, 30)) + dt.timedelta(1)
+datetime.datetime(2016, 10, 31, 0, 0, tzinfo=&lt;DstTzInfo 'Europe/Madrid' CEST+2:00:00 DST&gt;)
+>>> tz.localize(dt.datetime(2016, 10, 31)) - tz.localize(dt.datetime(2016, 10, 30))
+datetime.timedelta(1, 3600) # Un dia y una hora???</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>
+>>> tz.normalize(tz.localize(dt.datetime(2016, 10, 30)) + dt.timedelta(1))
+datetime.datetime(2016, 10, 30, 23, 0, tzinfo=&lt;DstTzInfo 'Europe/Madrid' CET+1:00:00 STD&gt;)
+# No es necesario si la fecha esta en utc
+</code></pre>
+		                  </section>
+		                  <section><img src="img/datetime/gotit.jpg" width="60%"/></section>
+	                    <section>
+												<h3>El dia D</h3>
+												<pre ><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime.now())
+# 30 Octubre a las 2:00am zombies will spawn.</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>
+>>> tz.localize(dt.datetime(2016, 10, 30, 2), is_dst=None)
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in <module>
+  File "/usr/local/lib/python2.7/site-packages/pytz/tzinfo.py", line 349, in localize
+    raise AmbiguousTimeError(dt)
+pytz.exceptions.AmbiguousTimeError: 2016-10-30 02:00:00
+>>> tz.localize(dt.datetime(2016, 10, 30, 2), is_dst=True).isoformat()
+'2016-10-30T02:00:00+02:00'
+>>> tz.localize(dt.datetime(2016, 10, 30, 2), is_dst=False).isoformat()
+'2016-10-30T02:00:00+01:00'
+# False es el default
+</code></pre>
+		                  </section>
+	                    <section>
+												<h3>El otro dia D</h3>
+												<pre ><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime.now())
+# 27 Marzo a las 2:00am te llaman por telefono.</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>
+>>> tz.localize(dt.datetime(2016, 3, 27, 3, 30)) == tz.localize(dt.datetime(2016, 3, 27, 2, 30))
+</code></pre>
+		                  </section>
+	                    <section>
+												<h3>Para hacerlo más interesante</h3>
+												<ul>
+													<li class="fragment">Differentes paises cambian la hora en momentos diferentes</li>
+													<li class="fragment">Algunos paises no cambian la hora</li>
+													<li class="fragment">El hemisferio norte y el sur cambian de forma distinta</li>
+													<li class="fragment">Algunos lugares geograficos tienen dos zonas, dependiendo de quien seas.
+													<br/>En westbank, la poblacion de israel y la de palestina.</li>
+												</ul>
+		                  </section>
+		                  <section><img src="img/datetime/mess.jpg" width="60%"/></section>
+	                    <section>
+												<h3>Cambios en los cambios y zonas horarias</h3>
+												<ul>
+													<li >Y entonces estan los cambios. </li>
+													<!-- Guido bug. checkear si es DST mirando el tiempo en enero contra el tiempo en junio -->
+													<li class="fragment">Como samoa, que se saltaron un dia. 30 Dec</li>
+													<li class="fragment">Libia, que avisa 2 dias antes de que no va a entrar en DST</li>
+													<li class="fragment">Cambio del calendario juliano al gregoriano. Salto de dias</li>
+													<li class="fragment">Y muchos más...</li>
+												</ul>
+		                  </section>
+	                  </section>
+                    <section>
+	                    <section>
+												<h3>Genial, me lo mandas en JSON?</h4>
+			                  <img src="img/datetime/json.jpg" width="60%"/>
+											</section>
+	                    <section>
+												<h3>Serializando datetimes</h4>
+												<h5>Usando strings</h5>
+												<!-- btw, json cannot represent NaN nor Infitite/-Infinite -->
+												<pre ><code class="python" data-trim contenteditable>
+>>> dt.datetime.now(dt.timezone.utc).isoformat()
+'2016-09-24T23:36:00.952031+00:00'
+# Pierdes la timezone, solo tienes el offset
+</code></pre>
+		                  </section>
+	                    <section>
+												<h3>Usando enteros</h4>
+												<h5>Epoch based times</h5>
+												<pre ><code class="python" data-trim contenteditable>
+>>> time.time()  # POXIS time (monotonic/ascending)
+1474760223.861878
+# Para pasar un datetime:
+>>> (utc_naive_dt - dt.datetime.utcfromtimestamp(0)).total_seconds()
+>>> time.mktime(local_naive_dt) + local_naive_dt.microsecond / 1E6
+# Atencion, NO USES datetime.fromtimestamp
+</code></pre>
+                                                <!-- There are other epochs, like NTP which uses 1900 -->
+		                  </section>
+	                    <section>
+												<!-- Unix time ignores leap seconds, it is not mononotic! -->
+			                  <img src="img/datetime/leap.jpg" width="60%"/>
+		                  </section>
+											<!-- El problema es que un segundo lo puedes medir:
+											con un reloj atomico o como una parte de un dia (leap second)
+
+											UTC-SLS (Smooth leap seconds), intenta solucionarlo aniadiendo
+											fraciones de segundo cada segundo en los ultimos 1000 segundos
+
+											Otros sistemas repiten el segundo
+											Otra opcion es el leap second correspone a la primera milesima
+											de segundo en el siguiente segundo
+
+											Leap second al final de esta anio
+											-->
+	                    <section>
+			                  <img src="img/datetime/saturno.jpg" width="60%"/>
+		                  </section>
+	                    <section>
+			                  <img src="img/datetime/satellite.jpg" width="60%"/>
+		                  </section>
+	                  </section>
+                    <section>
+		                  <img src="img/datetime/hard-day.jpg" width="60%"/>
+	                  </section>
+                    <section>
+	                    <section>
+			                  	<h2>En resumen</h2>
+													<ul>
+														<li class="fragment">Trabaja siempre con zone aware datetimes.</li>
+														<!-- un datetime a pelo puede ser:
+														 - datetime que le falta la zona
+														 - datetime en utc? datetime.utcnow() datetime utcfromtimstamp()
+														 - datetime en zona local?  datetime.now() datetime.fromtimestamp()
+													 -->
+														<li class="fragment">Trabaja siempre con no DST times (utc preferible).</li>
+														<!-- es mucho mas seguro, te quita problemas de aritmetica, construir fechas, etc
+																si es necesario guarda la zona, pero el tiempo siempre en utc
+																UTC es la clave, todo se puede representar como offsets de utc.
+																La "idea" es monotonica y ascendente. (Con excepciones)
+													 -->
+														<li class="fragment">Quieres trabajar con DST timezones, solo en las interfaces.</li>
+														<!-- llama a as_timezone al final, si tus fechas son aware y en utc todo va bien -->
+														<li class="fragment">Aritmetica con fechas en DST zones => normalize.</li>
+														<!-- Espero que no necesites esto, pero si lo necesitas, ya sabes -->
+														<li class="fragment">Si necesitas serializar, isoformat o epoch time.</li>
+														<!-- Serializar siempre es una pesadilla y con datetime aun mas.
+														Si puedes usa string con isoformat, sino un epoch time -->
+														<li class="fragment">Manten actualizado el modulo pytz.</li>
+														<!-- Para hacer el mundo mas interesante los pasises actualizan su configuracion
+														manten pytz actualizado para estar al dia -->
+														<li class="fragment">Cuidado con los leap seconds!</li>
+														<!-- Si esto te preocupa, y quizas deberia, lee sobre ello, no hay una respuesta facil -->
+														<li class="fragment">No depdendas en que el tiempo es ascendente y monotonico!</li>
+														<!-- el cpu time puede ir hacia atras, la maquina se actualiza y periodicamente sincroniza
+														con NTP lo que puede hacer que vaya hacia atras -->
+														<li class="fragment">Soporte para años entre 1 y 9999.</li>
+														<!-- necesitas una libreria para trabajar con esos tiempos -->
+														<li class="fragment">No subestimes la complejidad al trabajar con tiempo.</li>
+														<!-- No hay atajos validos cuando juegas con el tiempo, creeme, el mismo guido a
+														tenido bugs por esto -->
+														<li class="fragment">El tiempo "es relativo", prepara tu systema para ello.</li>
+														<!-- Piensa como afectan estos casos especiales a tu aplicacion, en caso de que sea sensible a ellos -->
+													</ul>
+		                  </section>
+	                    <section>
+			                  	<h2>Librerias interesantes</h2>
+													<ul>
+														<li class="fragment">pytz</li>
+														<li class="fragment">freezegun</li>
+														<li class="fragment">dateutil</li>
+														<li class="fragment">arrow</li>
+														<li class="fragment">tzcron</li>
+														<li class="fragment">astropy</li>
+													</ul>
+											</section>
+										</section>
+                    <section>
+                    Questions?
+                        <video width="90%" height="100%" controls>
+                            <source src="img/robot.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </section>
+                    <section>
+		                  	<h2>Aun quieres mas?<br/> vamos con el leap second</h2>
+												<pre class="fragment"><code class="python" data-trim contenteditable>
+# time
+>>> time.mktime(time.strptime('2016-06-30T23:59:59', "%Y-%m-%dT%H:%M:%S"))
+1467327599.0
+>>> time.mktime(time.strptime('2016-06-30T23:59:60', "%Y-%m-%dT%H:%M:%S"))
+1467327600.0
+>>> time.mktime(time.strptime('2016-07-01T00:00:00', "%Y-%m-%dT%H:%M:%S"))
+1467327600.0
+</code></pre>
+<pre class="fragment"><code class="python" data-trim contenteditable>
+# datetime
+>>> dt.datetime.strptime('2016-06-30T23:59:60', "%Y-%m-%dT%H:%M:%S")
+Traceback (most recent call last):
+  File "&lt;stdin>", line 1, in &lt;module>
+ValueError: second must be in 0..59
+</code></pre>
+<!-- What will happen on the day? Depends on your NTP -->
+										</section>
+                    <section>
+		                  	<h2>La linea del tiempo</h2>
+										</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
