@@ -25,7 +25,7 @@
 		<div class="reveal">
 			<div class="slides">
                     <section>
-											<h3>Travelling in Datetime</h3>
+											<h3>Traveling in Datetime</h3>
 											<img class="noborder" src="img/datetime/clock.gif" width="50%"/>
 											<small >Mario Corchero <br/> PyconEs 2016</small>
 										</section>
@@ -90,11 +90,11 @@ pytz library brings the IANA timezone database (aka the Olson database) to Pytho
 												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(year, month, day, tzinfo=tz)
 # See you soon!</code></pre>
 												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime.now())
-# zombies will spawn whlist you sleep</code></pre>
+# zombies will spawn whilst you sleep</code></pre>
 										</section>
                     <section>
 	                    <section>
-												<h3>Los consejos de tu cuñado que no funcionan</h3>
+												<h3>Los consejos de que no funcionan</h3>
 												<ul>
 													<li class="fragment">Usa fechas sin tz internamente y despues localiza.</li>
 													<!-- Problemas: 1) al lozalizar te estalla por los DST
@@ -102,10 +102,6 @@ pytz library brings the IANA timezone database (aka the Olson database) to Pytho
 													<li class="fragment">Puedo manejar "a pelo" las zonas horarias.</li>
 												</ul>
 											</section>
-		                  <section>
-												<h3>Fin</h3>
-												<!-- David dice: Yo creo que no es tan dificil -->
-		                  </section>
                       <section data-transition="none"><img src="img/datetime/laught-1.jpg" width="60%"/></section>
                       <section data-transition="none"><img src="img/datetime/laught-2.jpg" width="60%"/></section>
                       <section data-transition="none"><img src="img/datetime/laught-3.jpg" width="60%"/></section>
@@ -125,14 +121,14 @@ pytz library brings the IANA timezone database (aka the Olson database) to Pytho
 >>> now = dt.datetime.now(pytz.utc)
 >>> now.astimezone(pytz.timezone("Asia/Kathmandu"))</code></pre>
 												<img src="img/datetime/nepal.jpg" width="60%"/>
-												<p> UTC </p>
+												<p> UTC (Cordinated Universal Time) </p>
 											</section>
 		                  <section>
 												<h3>DST</h3>
 												<!-- Los horarios de verano!, si le sumas a una fecha un dia (24h) te da la misma hora maniana,
 												pero si maniana le restas hoy te da un dia y una hora!
 												Cuando cojas una fecha, llama a normalize) -->
-												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(year, month, day, tzinfo=tz)</code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>>>> dt.datetime(year, month, day, tzinfo=tz)  #No! API limitation</code></pre>
 												<pre class="fragment"><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime(2016, 10, 30)) + dt.timedelta(1)
 datetime.datetime(2016, 10, 31, 0, 0, tzinfo=&lt;DstTzInfo 'Europe/Madrid' CEST+2:00:00 DST&gt;)
 >>> tz.localize(dt.datetime(2016, 10, 31)) - tz.localize(dt.datetime(2016, 10, 30))
@@ -143,7 +139,6 @@ datetime.datetime(2016, 10, 30, 23, 0, tzinfo=&lt;DstTzInfo 'Europe/Madrid' CET+
 # No es necesario si la fecha esta en utc
 </code></pre>
 		                  </section>
-		                  <section><img src="img/datetime/gotit.jpg" width="60%"/></section>
 	                    <section>
 												<h3>El dia D</h3>
 												<pre ><code class="python" data-trim contenteditable>>>> tz.localize(dt.datetime.now())
@@ -169,6 +164,14 @@ pytz.exceptions.AmbiguousTimeError: 2016-10-30 02:00:00
 												<pre class="fragment"><code class="python" data-trim contenteditable>
 >>> tz.localize(dt.datetime(2016, 3, 27, 3, 30)) == tz.localize(dt.datetime(2016, 3, 27, 2, 30))
 </code></pre>
+												<pre class="fragment"><code class="python" data-trim contenteditable>
+>>> tz.localize(dt.datetime(2016, 3, 27, 2, 30), is_dst=None)
+Traceback (most recent call last):
+  File "stdin", line 1, in module
+  File "/usr/local/lib/python2.7/site-packages/pytz/tzinfo.py", line 327, in localize
+    raise NonExistentTimeError(dt)
+pytz.exceptions.NonExistentTimeError: 2016-03-27 02:30:00
+</code></pre>
 		                  </section>
 	                    <section>
 												<h3>Para hacerlo más interesante</h3>
@@ -193,6 +196,7 @@ pytz.exceptions.AmbiguousTimeError: 2016-10-30 02:00:00
 												</ul>
 		                  </section>
 	                  </section>
+		                  <section><img src="img/datetime/gotit.jpg" width="60%"/></section>
                     <section>
 	                    <section>
 												<h3>Genial, me lo mandas en JSON?</h4>
@@ -288,6 +292,16 @@ pytz.exceptions.AmbiguousTimeError: 2016-10-30 02:00:00
 													</ul>
 		                  </section>
 	                    <section>
+			                  	<h2>Conceptos</h2>
+													<ul>
+														<li class="fragment">date, time, datetime(timestamp) y timedelta</li>
+														<li class="fragment">offsets</li>
+														<li class="fragment">Timezones</li>
+														<li class="fragment">Leap seconds</li>
+														<li class="fragment">Cuidado con depender en que el tiempo sea monotonico y ascendente</li>
+													</ul>
+		                  </section>
+	                    <section>
 			                  	<h2>Librerias interesantes</h2>
 													<ul>
 														<li class="fragment">pytz</li>
@@ -300,9 +314,9 @@ pytz.exceptions.AmbiguousTimeError: 2016-10-30 02:00:00
 											</section>
 										</section>
                     <section>
-                    Questions?
-                        <video width="90%" height="100%" controls>
-                            <source src="img/robot.mp4" type="video/mp4">
+                        <h2>Questions?</h2>
+                        <video width="30%" controls>
+                            <source src="img/datetime/video.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </section>
@@ -328,6 +342,14 @@ ValueError: second must be in 0..59
 										</section>
                     <section>
 		                  	<h2>La linea del tiempo</h2>
+												<ul>
+													<li>Solar based (Como parte de un año)</li>
+													<li>Moon Based (como parte de un día)</li>
+													<li>ITA (International Atomic time)</li><!-- como "sientes" el paso del tiempo (con leap seconds) -->
+													<li>UT1 (Universal Time) </li><!-- como "sientes" el paso del tiempo (sin leap seconds) -->
+													<li>CPU Time</li><!-- como "sientes" el paso del tiempo (sin leap seconds) -->
+													<li>NTP time</li><!-- como "sientes" el paso del tiempo (sin leap seconds) -->
+												</ul>
 										</section>
 			</div>
 		</div>
