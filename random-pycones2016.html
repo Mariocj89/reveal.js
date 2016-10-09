@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Travelling in Datetime</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                    <section>
+											<h3>Random "Stuff"</h3>
+											<img class="noborder" src="img/datetime/clock.gif" width="50%"/>
+											<small >Mario Corchero <br/> PyconEs 2016</small>
+										</section>
+                    <section>
+                        <pre><code class="python" data-trim contenteditable>
+>>> 0.1 + 0.2 == 0.3
+False
+                        </code></pre>
+                    </section>
+                    <section>
+											<h4>PTH files</h4>
+										</section>
+                    <section>
+                        <pre><code class="python" data-trim contenteditable>
+>>> if (1==1) is True:
+...   print("sanity mode")
+... else:
+...   print("insanity mode")
+...
+insanity mode
+                        </code></pre>
+                        <pre class="fragment"><code class="python" data-trim contenteditable>
+>>> __builtins__.True = False
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre ><code class="python" data-trim contenteditable>
+$ echo "print('ninja print')" > tmp.py
+$ PYTHONSTARTUP=tmp.py python
+Python 2.7.12 (default, Jun 29 2016, 14:05:02)
+[GCC 4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+ninja print
+>>> # Where did that came from?
+                        </code></pre>
+                    </section>
+                    <section ><img src="img/random/dog.jpg" width="60%"/></section>
+                    <section>
+                        <pre ><code class="python" data-trim contenteditable>
+>>> def a():
+...     print("A")
+...
+>>> def b():
+...     print("B")
+...
+>>> b.__code__, a.__code__ = a.__code__, b.__code__
+>>> a()
+B
+>>> b()
+A
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre ><code class="python" data-trim contenteditable>
+>>> import logging
+>>> logging.__file__
+                        </code></pre>
+                    </section>
+                    <section>
+                        <pre ><code class="python" data-trim contenteditable>
+class SampleTest(TestCase):
+    def setUp(self):
+        patcher = mock.patch('XXX')
+        self.addCleanup(patcher.stop)
+                        </code></pre>
+										</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+				transition: null,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
